@@ -14,6 +14,7 @@ Extend `audit.py` with coverage, dimension, hash/duplicate, artifact, mapping, a
 Validate the manifest; summarize reasons, sources, sizes and supervision; inspect outliers; export tables and figures; create an exclusion-based 548-record subset from training-eligible rows.
 ## Required Experiment
 Compare `audit_budget_0.25x` with instructor `real_only` and the exact `random_budget_0.25x` control for seeds 17, 42, and 73.
+Students train only the group method; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 `audit.json`, coverage CSVs, exclusion overlay, subset JSONL, figures, and standard segmentation result bundles.
 ## Required Tests
