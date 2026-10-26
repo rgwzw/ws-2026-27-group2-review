@@ -14,6 +14,7 @@ Implement a robust boundary/layout score, refuse unjustified pixel alignment, do
 Partition by supervision; derive structures; score verified pairs; use non-pixel summaries for others; rank eligible rows; select 548; benchmark.
 ## Required Experiment
 Compare `structural_consistency_budget_0.25x` with `real_only` and exact `random_budget_0.25x` for all required seeds.
+Students train only the group method for seeds 17, 42, and 73; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Score/component JSONL, ablation CSV, overlays, subset JSONL, and result bundles.
 ## Required Tests
