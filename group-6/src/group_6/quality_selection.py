@@ -2,7 +2,7 @@
 from typing import Any, Iterable, Mapping
 
 
-def select_quality(records: Iterable[Mapping[str, Any]], *, budget: int, methods: Iterable[str] = ()) -> list[dict[str, Any]]:
+def select_quality(records: Iterable[Mapping[str, Any]], *, budget: int, methods: Iterable[str] = (), seed: int = 42) -> list[dict[str, Any]]:
     methods = tuple(methods)
     ranked = []
     for row in records:
@@ -15,4 +15,4 @@ def select_quality(records: Iterable[Mapping[str, Any]], *, budget: int, methods
     if len(ranked) < budget:
         raise ValueError("Insufficient training-eligible records")
     ranked.sort(key=lambda value: (-value[0], value[1]))
-    return [{"schema_version": "1.0", "synthetic_id": key, "selected": True, "rank": rank, "method": "quality", "score": score} for rank, (score, key) in enumerate(ranked[:budget], 1)]
+    return [{"schema_version": "1.0", "synthetic_id": key, "selected": True, "rank": rank, "method": "quality", "budget": budget, "seed": seed, "score": score} for rank, (score, key) in enumerate(ranked[:budget], 1)]
