@@ -14,6 +14,7 @@ Implement deterministic clustering, k-center, or shipped farthest-first selectio
 Embed eligible rows; validate cache/dimensions; select representatives; measure coverage/source balance; freeze 548 IDs; benchmark.
 ## Required Experiment
 Compare `diversity_budget_0.25x` with `real_only` and exact `random_budget_0.25x` across required seeds.
+Students train only the group method for seeds 17, 42, and 73; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Embedding provenance, diversity annotations, cluster/coverage CSV and plots, subset JSONL, result bundles.
 ## Required Tests
