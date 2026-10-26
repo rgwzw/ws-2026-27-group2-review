@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sensation-seminar/manifest.schema.json",
+  "title": "SENSATION seminar synthetic record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "synthetic_id", "source_group", "source_relpath",
+    "original_filename", "extension", "original_id", "real_image_relpath",
+    "real_mask_relpath", "real_split", "generation_tokens", "variant",
+    "width", "height", "mode", "content_sha256", "validity", "eligibility",
+    "supervision", "generation_metadata"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.1"},
+    "synthetic_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "source_group": {"type": "string", "pattern": "^group[1-9]$"},
+    "source_relpath": {"type": "string"},
+    "original_filename": {"type": "string"},
+    "extension": {"enum": [".jpg", ".jpeg", ".png"]},
+    "original_id": {"type": ["string", "null"]},
+    "real_image_relpath": {"type": ["string", "null"]},
+    "real_mask_relpath": {"type": ["string", "null"]},
+    "real_split": {"enum": ["training", "validation", "testing", null]},
+    "generation_tokens": {"type": "array", "items": {"type": "string"}},
+    "variant": {"type": ["string", "null"]},
+    "width": {"type": ["integer", "null"], "minimum": 1},
+    "height": {"type": ["integer", "null"], "minimum": 1},
+    "mode": {"type": ["string", "null"]},
+    "content_sha256": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+    "validity": {
+      "type": "object",
+      "required": ["status", "reason_codes"],
+      "properties": {
+        "status": {"enum": ["valid", "invalid"]},
+        "reason_codes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "required": ["analysis", "segmentation_training"],
+      "properties": {
+        "analysis": {"type": "boolean"},
+        "segmentation_training": {"type": "boolean"}
+      }
+    },
+    "supervision": {
+      "type": "object",
+      "required": ["status", "mask_strategy", "source_size", "synthetic_size", "target_size", "notes"],
+      "properties": {
+        "status": {"enum": ["verified", "uncertain", "invalid"]},
+        "mask_strategy": {"enum": ["identity", "resize", "resize_with_padding", "crop", "custom", "unknown"]},
+        "source_size": {"$ref": "#/$defs/size"},
+        "synthetic_size": {"anyOf": [{"$ref": "#/$defs/size"}, {"type": "null"}]},
+        "target_size": {"anyOf": [{"$ref": "#/$defs/size"}, {"type": "null"}]},
+        "notes": {"type": "string"}
+      }
+    },
+    "generation_metadata": {"type": "object"}
+  },
+  "$defs": {
+    "size": {
+      "type": "array",
+      "prefixItems": [{"type": "integer", "minimum": 1}, {"type": "integer", "minimum": 1}],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    }
+  }
+}
