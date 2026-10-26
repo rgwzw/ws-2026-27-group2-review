@@ -6,11 +6,13 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
-import yaml
-
 
 def load_yaml(path: str | Path) -> dict[str, Any]:
     """Load one YAML mapping and reject ambiguous top-level values."""
+    try:
+        import yaml
+    except ModuleNotFoundError as error:
+        raise RuntimeError("PyYAML is required to load experiment configurations") from error
     config_path = Path(path)
     with config_path.open("r", encoding="utf-8") as handle:
         value = yaml.safe_load(handle)
