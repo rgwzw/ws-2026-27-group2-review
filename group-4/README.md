@@ -14,6 +14,7 @@ Compute global and class-wise agreement or mIoU, expose road/sidewalk penalties,
 Freeze teacher; predict paired images; align only with justified transforms; calculate metrics; rank eligible records; inspect changes; benchmark 548 samples.
 ## Required Experiment
 Compare `semantic_consistency_budget_0.25x` with `real_only` and exact `random_budget_0.25x` across three seeds.
+Students train only the group method for seeds 17, 42, and 73; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Consistency overlay, class CSV, change maps, subset JSONL, and standard result bundles.
 ## Required Tests
