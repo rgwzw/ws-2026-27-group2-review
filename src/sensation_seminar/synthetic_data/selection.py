@@ -34,7 +34,8 @@ def random_training_subset(
         raise ValueError(f"Need {size} training-eligible records, found {total}")
 
     rng = random.Random(seed)
-    for values in groups.values():
+    for group in sorted(groups):
+        values = groups[group]
         values.sort(key=lambda row: row["synthetic_id"])
         rng.shuffle(values)
     raw = {group: size * len(values) / total for group, values in groups.items()}
