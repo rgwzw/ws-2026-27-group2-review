@@ -14,6 +14,7 @@ Batch and cache embeddings with checksummed model/preprocessing metadata, comput
 Resolve pairs; embed each unique image; validate cache keys; compute scores; inspect distributions; select 548; train/evaluate three seeds.
 ## Required Experiment
 Compare `feature_similarity_budget_0.25x` with instructor `real_only` and exact `random_budget_0.25x`.
+Students train only the group method for seeds 17, 42, and 73; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Embedding metadata/cache reference, score JSONL, plots, subset JSONL, and standard result bundles.
 ## Required Tests
