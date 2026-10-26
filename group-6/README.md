@@ -14,6 +14,7 @@ Validate joins, normalize higher-is-better, document weights/missing policy, use
 Discover overlays; validate provenance; normalize/combine; ablate weights; select; freeze subset; run three seeds.
 ## Required Experiment
 Compare `quality_budget_0.25x` with `real_only` and exact `random_budget_0.25x`; compare individual signals when available.
+Students train only the group method for seeds 17, 42, and 73; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Versioned selector, weight/threshold CSV, subset JSONL, figures, and standard result bundles.
 ## Required Tests
