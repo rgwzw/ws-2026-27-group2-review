@@ -14,6 +14,7 @@ Implement BRISQUE/NIQE or the shipped contrast-gradient fallback, normalize high
 Filter analysis rows; score deterministically; calibrate direction; inspect top/bottom examples; select the best 548 training-eligible records; run the benchmark.
 ## Required Experiment
 Compare `perceptual_quality_budget_0.25x` against `real_only` and the exact `random_budget_0.25x` for seeds 17, 42, and 73.
+Students train only the group method; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Score JSONL, agreement CSV, examples/figures, subset JSONL, and standard result bundles.
 ## Required Tests
