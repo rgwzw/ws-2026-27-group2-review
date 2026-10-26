@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sensation-seminar"
+version = "0.1.0"
+description = "Quality-aware synthetic data experiments for SENSATION-DS"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26",
+  "Pillow>=10.0",
+  "PyYAML>=6.0",
+  "torch>=2.2",
+  "segmentation-models-pytorch>=0.4",
+]
+
+[project.optional-dependencies]
+dev = [
+  "jsonschema>=4.21",
+  "pytest>=8.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sensation_seminar*"]
+namespaces = true
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+pythonpath = ["src"]
+testpaths = ["tests", "group-1/tests", "group-2/tests", "group-3/tests", "group-4/tests", "group-5/tests", "group-6/tests", "group-7/tests", "group-8/tests", "group-9/tests"]
+markers = [
+  "data: checks requiring the local seminar datasets",
+  "gpu: checks requiring a CUDA device",
+  "slow: checks unsuitable for the fast suite",
+  "integration: multi-component integration checks",
+]
