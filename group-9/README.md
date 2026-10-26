@@ -14,6 +14,7 @@ Validate schemas/config/budgets/splits, aggregate seeds, compute paired deltas/u
 Discover bundles; validate; group comparable runs; aggregate overall/per-class/safety metrics; compute deltas; inspect failures; build reproducibility matrix.
 ## Required Experiment
 Confirm nominated quality, diversity and joint methods over seeds 17, 42 and 73 when those results exist; otherwise report baselines and available methods.
+Students do not retrain instructor `real_only` or `random_budget_0.25x` baselines unless explicitly requested.
 ## Expected Results
 `comparison.csv`, `aggregate.json`, paper figures, failure analysis, and reproducibility matrix.
 ## Required Tests
