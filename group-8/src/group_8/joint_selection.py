@@ -3,7 +3,7 @@ from typing import Mapping
 import numpy as np
 
 
-def select_joint(quality: Mapping[str, float], embeddings: Mapping[str, np.ndarray], *, budget: int, quality_weight: float = 0.5) -> list[str]:
+def select_joint(quality: Mapping[str, float], embeddings: Mapping[str, np.ndarray], *, budget: int, quality_weight: float = 0.5, seed: int = 42) -> list[dict]:
     keys = sorted(quality.keys() & embeddings.keys())
     if not 0 <= quality_weight <= 1 or len(keys) < budget:
         raise ValueError("Invalid weight or insufficient common records")
@@ -14,4 +14,4 @@ def select_joint(quality: Mapping[str, float], embeddings: Mapping[str, np.ndarr
         distances = {k: min(float(np.linalg.norm(vectors[k] - vectors[s])) for s in selected) for k in remaining}
         scale = max(distances.values()) or 1.0
         selected.append(min(remaining, key=lambda k: (-(quality_weight * float(quality[k]) + (1 - quality_weight) * distances[k] / scale), k)))
-    return selected
+    return [{"schema_version": "1.0", "synthetic_id": key, "selected": True, "rank": rank, "method": "joint", "budget": budget, "seed": seed, "quality_weight": quality_weight} for rank, key in enumerate(selected, 1)]
