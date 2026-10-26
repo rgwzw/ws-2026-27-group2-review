@@ -1,5 +1,5 @@
 # Local input data and task prompts
-datasets/
+/datasets/
 prompt*.md
 
 # Python environments and caches
