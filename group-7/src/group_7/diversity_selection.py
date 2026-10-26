@@ -3,7 +3,7 @@ from typing import Mapping
 import numpy as np
 
 
-def select_diverse(embeddings: Mapping[str, np.ndarray], *, budget: int) -> list[str]:
+def select_diverse(embeddings: Mapping[str, np.ndarray], *, budget: int, seed: int = 42) -> list[dict]:
     keys = sorted(embeddings)
     if budget < 1 or len(keys) < budget:
         raise ValueError("Budget must fit available embeddings")
@@ -15,4 +15,4 @@ def select_diverse(embeddings: Mapping[str, np.ndarray], *, budget: int) -> list
         remaining = [k for k in keys if k not in selected]
         distances = {k: min(float(np.linalg.norm(vectors[k] - vectors[s])) for s in selected) for k in remaining}
         selected.append(min(remaining, key=lambda k: (-distances[k], k)))
-    return selected
+    return [{"schema_version": "1.0", "synthetic_id": key, "selected": True, "rank": rank, "method": "diversity", "budget": budget, "seed": seed} for rank, key in enumerate(selected, 1)]
