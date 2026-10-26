@@ -1,0 +1,34 @@
+# Local input data and task prompts
+datasets/
+prompt*.md
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Generated synthetic-data index and overlays
+synthetic-data-seminar/manifest.jsonl
+synthetic-data-seminar/audit/*
+synthetic-data-seminar/scores/*
+synthetic-data-seminar/subsets/*
+
+# Experiment artifacts
+**/checkpoints/
+**/predictions/
+**/logs/
+baseline/results/*/
+group-*/results/*/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
