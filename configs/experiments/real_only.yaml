@@ -1,0 +1,4 @@
+experiment: real_only
+synthetic_subset: null
+synthetic_budget: null
+required_before_seminar: true
