@@ -1,0 +1,65 @@
+schema_version: "1.0"
+source_size: [1152, 768]
+default:
+  status: uncertain
+  mask_strategy: unknown
+  target_size: null
+  notes: No verified source-group geometry rule matches this record.
+groups:
+  group1:
+    status: uncertain
+    mask_strategy: resize
+    target_size: [768, 512]
+    notes: Matching 3:2 canvas observed, but resize-only conditioning is not documented.
+  group2:
+    status: uncertain
+    mask_strategy: unknown
+    target_size: [512, 512]
+    notes: Square generation canvas; crop or padding operation is not documented.
+  group3:
+    status: verified
+    mask_strategy: identity
+    target_size: [1152, 768]
+    notes: Stored synthetic and source canvases match; audit must still reject dimension exceptions.
+  group4:
+    status: uncertain
+    mask_strategy: custom
+    target_size: [768, 576]
+    notes: Generation index references masks/depth, but the 4:3 canvas transform is not reproducible here.
+  group5:
+    rules:
+      - path_contains: /01/
+        status: verified
+        mask_strategy: identity
+        target_size: [1152, 768]
+        notes: Stored source and synthetic canvases match.
+      - path_contains: /02/images/
+        status: verified
+        mask_strategy: resize
+        target_size: [768, 512]
+        notes: Included generation manifest documents a 768x512 ControlNet mask-conditioned run.
+      - path_contains: /03/images/
+        status: verified
+        mask_strategy: resize
+        target_size: [768, 512]
+        notes: Included generation manifest documents a 768x512 ControlNet mask-conditioned run.
+  group6:
+    status: uncertain
+    mask_strategy: unknown
+    target_size: [768, 768]
+    notes: Square generation canvas; crop or padding operation is not documented.
+  group7:
+    status: verified
+    mask_strategy: identity
+    target_size: [1152, 768]
+    notes: Stored synthetic and source canvases match; artifacts remain ineligible.
+  group8:
+    status: verified
+    mask_strategy: identity
+    target_size: [1152, 768]
+    notes: Stored synthetic and source canvases match.
+  group9:
+    status: verified
+    mask_strategy: identity
+    target_size: [1152, 768]
+    notes: Stored synthetic and source canvases match; macOS artifacts remain ineligible.
