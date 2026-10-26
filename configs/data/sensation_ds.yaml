@@ -1,0 +1,26 @@
+schema_version: "1.0"
+dataset_root: datasets/sensation_ds_v2_1_1152x768
+synthetic_root: datasets/synthetic-data
+splits:
+  train: training
+  validation: validation
+  test: testing
+image_directory: images
+mask_directory: masks
+image_extensions: [.jpg, .jpeg, .png]
+source_size: [1152, 768]
+classes:
+  0: background
+  1: road
+  2: sidewalk
+  3: bikelane
+  4: person
+  5: vehicle
+  6: bicycle
+  7: traffic_light
+  8: obstacle
+ignore_index: 255
+immutable_split_counts:
+  training: 2190
+  validation: 281
+  testing: 281
