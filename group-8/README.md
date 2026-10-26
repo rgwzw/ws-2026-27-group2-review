@@ -14,6 +14,7 @@ Implement a documented multi-objective rule or quality-constrained coverage, sta
 Validate/join inputs; normalize; sweep trade-off; measure quality/coverage; freeze one 548-record operating point; run controls and three seeds.
 ## Required Experiment
 Compare `joint_budget_0.25x` with `real_only`, exact random, and quality/diversity controls when available.
+Students train only the group method for seeds 17, 42, and 73; instructors provide both shared baselines unless retraining is explicitly requested.
 ## Expected Results
 Joint subsets, trade-off CSV/curve, ablations, chosen-point rationale, and standard result bundles.
 ## Required Tests
