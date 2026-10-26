@@ -1,0 +1,6 @@
+experiment: random_budget_0.25x
+synthetic_subset: synthetic-data-seminar/subsets/random_budget_0.25x.jsonl
+synthetic_manifest: synthetic-data-seminar/manifest.jsonl
+synthetic_budget: budget_0.25x
+synthetic_samples: 548
+required_before_seminar: true
