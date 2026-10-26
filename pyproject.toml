@@ -29,7 +29,12 @@ namespaces = true
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
-pythonpath = ["src"]
+pythonpath = [
+  "src",
+  "group-1/src", "group-2/src", "group-3/src",
+  "group-4/src", "group-5/src", "group-6/src",
+  "group-7/src", "group-8/src", "group-9/src",
+]
 testpaths = ["tests", "group-1/tests", "group-2/tests", "group-3/tests", "group-4/tests", "group-5/tests", "group-6/tests", "group-7/tests", "group-8/tests", "group-9/tests"]
 markers = [
   "data: checks requiring the local seminar datasets",
