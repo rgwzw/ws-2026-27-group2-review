@@ -135,8 +135,14 @@ def write_jsonl(records: Iterable[Mapping[str, Any]], output: str | Path) -> int
     return count
 
 
-def load_manifest(path: str | Path, *, eligibility_filter: str | None = None) -> list[dict[str, Any]]:
-    """Load JSONL and optionally retain `analysis` or `segmentation_training` rows."""
+def load_manifest(
+    path: str | Path,
+    *,
+    overlays: Iterable[str | Path] = (),
+    eligibility_filter: str | None = None,
+) -> list[dict[str, Any]]:
+    """Load the manifest, join score overlays, and optionally filter eligibility."""
+    overlays = tuple(overlays)
     records: list[dict[str, Any]] = []
     with Path(path).open("r", encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, 1):
@@ -147,5 +153,25 @@ def load_manifest(path: str | Path, *, eligibility_filter: str | None = None) ->
                 raise ValueError(f"Unsupported manifest schema on line {line_number}")
             if eligibility_filter and not record.get("eligibility", {}).get(eligibility_filter, False):
                 continue
+            if overlays:
+                record["scores"] = {}
             records.append(record)
+
+    by_id = {record["synthetic_id"]: record for record in records}
+    for overlay_path in overlays:
+        with Path(overlay_path).open("r", encoding="utf-8") as handle:
+            for line_number, line in enumerate(handle, 1):
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                synthetic_id = row.get("synthetic_id")
+                if synthetic_id not in by_id:
+                    raise ValueError(f"Unknown synthetic_id in {overlay_path} line {line_number}")
+                method = row.get("method")
+                if not method or "score" not in row:
+                    raise ValueError(f"Invalid score overlay row in {overlay_path} line {line_number}")
+                scores = by_id[synthetic_id]["scores"]
+                if method in scores:
+                    raise ValueError(f"Duplicate {method} score for {synthetic_id}")
+                scores[method] = row
     return records
