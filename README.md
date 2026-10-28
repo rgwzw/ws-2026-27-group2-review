@@ -47,3 +47,17 @@ Repeat with seeds `42` and `73`. The secondary `random_budget_0.50x` baseline is
 - `tests/`: CPU-fast shared tests. Optional checks use `data`, `gpu`, `slow`, and `integration` markers.
 
 The normal test suite neither downloads model weights nor modifies `datasets/`. See `baseline/README.md` for the full instructor workflow and each group README for its independent task and fallback behavior.
+
+## Group overview
+
+| Group | Students |
+| --- | --- |
+| 1 | Pritam Chaurasiya<br>Dhanjit Raj Gupta |
+| 2 | Yingchao Li<br>Jiaying Ping |
+| 3 | Mitesh Kumar |
+| 4 | Jakub Planka<br>Abhiram Sharma Kommunuri Venkat Malikarjun Siva Sai |
+| 5 | Aakash Girish<br>Kavitha Ganapathi Mahadeva Venkatesan |
+| 6 | Khanh Linh Vuong<br>Keerthika Sathish |
+| 7 | Revathi Bandi<br>Ritik Ritik |
+| 8 | Bhaskar Sesha Sai Lingamaneni<br>Pranathi Rokkam |
+| 9 | Indranil Paul<br>Keshav Periwal |
