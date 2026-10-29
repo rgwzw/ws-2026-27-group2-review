@@ -1,6 +1,6 @@
 architecture: DeepLabV3Plus
-encoder_name: tu-mobilenetv3_large_075
-encoder_weights: imagenet
+encoder_name: timm-mobilenetv3_large_075
+encoder_weights: true
 in_channels: 3
 classes: 9
 ignore_index: 255

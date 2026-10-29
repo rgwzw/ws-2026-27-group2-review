@@ -9,7 +9,7 @@ def build_deeplabv3plus(config: Mapping[str, Any] | None = None):
     """Build the fixed DeepLabV3Plus benchmark, importing heavy dependencies lazily."""
     settings = {
         "architecture": "DeepLabV3Plus",
-        "encoder_name": "tu-mobilenetv3_large_075",
+        "encoder_name": "timm-mobilenetv3_large_075",
         "encoder_weights": "imagenet",
         "in_channels": 3,
         "classes": 9,
@@ -18,7 +18,7 @@ def build_deeplabv3plus(config: Mapping[str, Any] | None = None):
         settings.update(config)
     if settings["architecture"] != "DeepLabV3Plus":
         raise ValueError("The seminar benchmark architecture must be DeepLabV3Plus")
-    if settings["encoder_name"] != "tu-mobilenetv3_large_075" or settings["classes"] != 9:
+    if settings["encoder_name"] != "timm-mobilenetv3_large_075" or settings["classes"] != 9:
         raise ValueError("The common encoder and nine-class output may not be changed")
     try:
         import segmentation_models_pytorch as smp
