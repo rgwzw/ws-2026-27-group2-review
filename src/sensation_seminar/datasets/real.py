@@ -15,37 +15,36 @@ PairTransform = Callable[
 
 
 class RealSegmentationDataset:
-    """Read-only dataset for the real SENSATION-DS splits.
+    """Read-only dataset for the authoritative real SENSATION-DS splits.
 
-    The existing dataset split is authoritative and must not be changed.
+    The existing training, validation, and testing split is authoritative
+    and must not be modified by this class.
 
-    Every returned sample uses the same metadata schema as the synthetic
-    dataset so that real and synthetic samples can safely be combined in
-    one PyTorch DataLoader.
+    Every returned sample intentionally follows the same metadata schema as
+    :class:`SyntheticSegmentationDataset`. This is important because real and
+    synthetic samples are mixed inside one PyTorch DataLoader. PyTorch's
+    default collate function expects all dictionaries in a batch to contain
+    the same keys.
 
-    Returned dictionary keys
-    ------------------------
+    Returned keys
+    -------------
     image
-        Image or transformed image tensor.
+        The RGB image or transformed image tensor.
 
     mask
-        Segmentation mask or transformed mask tensor.
+        The segmentation mask or transformed mask tensor.
 
     sample_id
-        Identifier of the concrete sample.
-
-        For real images this is the image stem.
+        Identifier of the concrete sample. For a real image this is the image
+        filename stem.
 
     original_id
-        Identifier of the corresponding original SENSATION-DS image.
-
-        For real samples this is identical to ``sample_id``.
-
-        For synthetic samples, the corresponding synthetic dataset uses
-        this field to point back to the source real image.
+        Identifier of the corresponding original SENSATION-DS training image.
+        For real images this is identical to ``sample_id``. Synthetic samples
+        use this field to point back to their real source image.
 
     kind
-        ``"real"`` for samples from this dataset.
+        Always ``"real"`` for this dataset.
     """
 
     VALID_SPLITS = {
@@ -66,57 +65,50 @@ class RealSegmentationDataset:
         split: str,
         transform: PairTransform | None = None,
     ) -> None:
+        if split not in self.VALID_SPLITS:
+            raise ValueError(
+                f"Unknown authoritative split: {split!r}. "
+                f"Expected one of {sorted(self.VALID_SPLITS)}."
+            )
+
         self.root = Path(root)
         self.split = split
         self.transform = transform
 
-        if split not in self.VALID_SPLITS:
-            raise ValueError(
-                f"Unknown split {split!r}. "
-                f"Expected one of {sorted(self.VALID_SPLITS)}."
-            )
+        image_dir = self.root / split / "images"
+        mask_dir = self.root / split / "masks"
 
-        self.image_dir = self.root / split / "images"
-        self.mask_dir = self.root / split / "masks"
-
-        if not self.image_dir.is_dir():
+        if not image_dir.is_dir():
             raise FileNotFoundError(
-                f"Image directory does not exist: {self.image_dir}"
+                f"Image directory does not exist: {image_dir}"
             )
 
-        if not self.mask_dir.is_dir():
+        if not mask_dir.is_dir():
             raise FileNotFoundError(
-                f"Mask directory does not exist: {self.mask_dir}"
-            )
-
-        images = sorted(
-            path
-            for path in self.image_dir.iterdir()
-            if path.is_file()
-            and path.suffix.lower() in self.VALID_IMAGE_EXTENSIONS
-        )
-
-        if not images:
-            raise ValueError(
-                f"No images found in {self.image_dir}"
+                f"Mask directory does not exist: {mask_dir}"
             )
 
         self.samples: list[tuple[Path, Path]] = []
 
-        for image_path in images:
-            mask_path = self.mask_dir / f"{image_path.stem}.png"
+        for image_path in sorted(image_dir.iterdir()):
+            if (
+                not image_path.is_file()
+                or image_path.suffix.lower() not in self.VALID_IMAGE_EXTENSIONS
+            ):
+                continue
+
+            mask_path = mask_dir / f"{image_path.stem}.png"
 
             if not mask_path.is_file():
                 raise FileNotFoundError(
-                    "Missing segmentation mask for "
-                    f"{image_path.name}: {mask_path}"
+                    f"Missing mask for image {image_path.name}: {mask_path}"
                 )
 
-            self.samples.append(
-                (
-                    image_path,
-                    mask_path,
-                )
+            self.samples.append((image_path, mask_path))
+
+        if not self.samples:
+            raise ValueError(
+                f"No image/mask pairs found for split {split!r} below {self.root}"
             )
 
     def __len__(self) -> int:
@@ -132,27 +124,25 @@ class RealSegmentationDataset:
             image = source.convert("RGB")
 
         with Image.open(mask_path) as source:
-            # Do not convert the mask to RGB or interpolate it here.
-            # Its class IDs must remain unchanged.
+            # Preserve class IDs exactly. Do not convert segmentation masks
+            # to RGB or apply image-style interpolation here.
             mask = source.copy()
 
         if self.transform is not None:
-            image, mask = self.transform(
-                image,
-                mask,
-            )
+            image, mask = self.transform(image, mask)
 
         sample_id = image_path.stem
 
         return {
             "image": image,
             "mask": mask,
-
-            # For a real sample, the concrete sample and the original
-            # SENSATION-DS source are the same image.
             "sample_id": sample_id,
+
+            # Real samples are their own source/original image. Keeping this
+            # key also on real samples makes the dictionary schema identical
+            # to SyntheticSegmentationDataset and prevents DataLoader collate
+            # failures when real and synthetic samples share a batch.
             "original_id": sample_id,
 
             "kind": "real",
         }
-    
