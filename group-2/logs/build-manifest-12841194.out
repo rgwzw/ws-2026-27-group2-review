@@ -1,0 +1,29 @@
+### Starting TaskPrologue of job 12841194 on w1434 at Tue Nov  3 20:07:58 CET 2026
+#   SLURM_JOB_NODELIST=w1434
+#   SLURM_JOB_NUM_NODES=1
+#   SLURM_NTASKS=
+#   SLURM_NPROCS=
+#   SLURM_TASKS_PER_NODE=1
+#   SLURM_JOB_CPUS_PER_NODE=4
+#   SLURM_EXPORT_ENV=
+Running on cores 0-3 with govenor powersave
+### Finished TaskPrologue
+/var/tmp/slurmd_spool/job12841194/slurm_script: line 12: module: command not found
+=== JOB_STATISTICS ===
+=== current date     : Tue Nov  3 20:07:58 CET 2026
+= Job-ID             : 12841194 on woody
+= Job-Name           : group2-manifest
+= Job-Command        : /home/woody/srsu/srsu119v/ws-2026-27/group-2/scripts/build_manifest.slurm
+= Initial workdir    : /home/woody/srsu/srsu119v/ws-2026-27
+= Queue/Partition    : work
+= Slurm account      : srsu with QOS=normal
+= Requested resources:  for 08:00:00
+= Elapsed runtime    : 00:00:00
+= Total RAM usage    : 0.0 GiB of requested  GiB (%)   
+= Node list          : w1434
+= Subm/Elig/Start/End: 2026-11-03T20:07:57 / 2026-11-03T20:07:57 / 2026-11-03T20:07:58 / 2026-11-03T20:07:58
+======================
+=== Quota infos ======
+    Path                 Used     SoftQ    HardQ    Gracetime  Filec    FileQ    FiHaQ    FileGrace    
+    /home/woody           107.7G  1000.0G  1500.0G        N/A     117K   5,000K   7,500K        N/A    
+    /home/hpc               6.0G   104.9G   209.7G        N/A   1,076      300K     400K        N/A    
