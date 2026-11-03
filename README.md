@@ -273,3 +273,168 @@ At the same time, the Road-to-Sidewalk Error Rate is slightly lower.
 The seminar therefore investigates whether quality-aware, consistency-aware, or diversity-aware selection can produce a synthetic subset that is more useful than random selection.
 
 This baseline is the common reference for all seminar groups.
+
+---
+
+## Datasets
+
+The seminar uses two datasets:
+
+1. **SENSATION-DS** as the real-world reference dataset.
+2. **Synthetic road-scene images** as the main data source for quality analysis, scoring, ranking, and synthetic-data selection.
+
+The synthetic images are the main starting point for the seminar groups.
+
+---
+
+### 1. SENSATION-DS
+
+SENSATION-DS provides the real images and segmentation masks used for the common downstream segmentation task.
+
+The dataset already contains a predefined split:
+
+- `training`
+- `validation`
+- `testing`
+
+Please **do not change, reshuffle, or regenerate this split**.
+
+Download the dataset here:
+
+**[Download SENSATION-DS](https://faubox.rrze.uni-erlangen.de/getlink/fiC3g6PmJjidomjGmjoiCk/sensation_ds_v2_1_1152x768.zip)**
+
+After extraction, place it under:
+
+```text
+datasets/
+└── sensation_ds_v2_1_1152x768/
+    ├── training/
+    │   ├── images/
+    │   └── masks/
+    ├── validation/
+    │   ├── images/
+    │   └── masks/
+    └── testing/
+        ├── images/
+        └── masks/
+```
+
+Expected path:
+
+```text
+datasets/sensation_ds_v2_1_1152x768/
+```
+
+---
+
+### 2. Synthetic Data
+
+The seminar groups primarily work with the synthetic road-scene images generated from the SENSATION-DS training data.
+
+Download the synthetic data here:
+
+**[Download Synthetic Seminar Data](https://faubox.rrze.uni-erlangen.de/getlink/fiETdcKW1sPD6xtdv7v9Fu/Datasets)**
+
+After extraction, place the data under:
+
+```text
+datasets/
+└── synthetic-data/
+    ├── group1/
+    ├── group2/
+    ├── group3/
+    ├── group4/
+    ├── group5/
+    ├── group6/
+    ├── group7/
+    ├── group8/
+    └── group9/
+```
+
+Expected path:
+
+```text
+datasets/synthetic-data/
+```
+
+The internal directory structure of the synthetic data may differ between source groups. Do not manually rename or reorganize the original synthetic files.
+
+The repository provides a normalized seminar manifest under:
+
+```text
+synthetic-data-seminar/
+```
+
+This manifest links synthetic images to their corresponding SENSATION-DS training images and contains the metadata required for the seminar experiments.
+
+---
+
+## How the Data Is Used in the Seminar
+
+The typical workflow is:
+
+```text
+synthetic images
+    ↓
+group-specific analysis with all images in synthetic-data (the group names are from previous seminar and has no relations to current seminar)
+    ↓
+quality / similarity / consistency / diversity scores
+    ↓
+selection of a synthetic subset
+    ↓
+real SENSATION-DS training data
++
+selected synthetic images
+    ↓
+common DeepLabV3+ segmentation training
+    ↓
+real validation set
+    ↓
+real test set
+```
+
+The synthetic images are therefore **not simply added directly to training**.
+
+Each group first investigates the synthetic data and develops a method to evaluate or select useful synthetic samples.
+
+Examples include:
+
+- perceptual image quality
+- feature-based similarity
+- semantic consistency
+- structural consistency
+- diversity
+- quality-aware selection
+- joint quality-diversity selection
+
+Only after a group has created its selected synthetic subset is that subset used for downstream segmentation training.
+
+---
+
+## Important Rules
+
+- Do not modify the predefined SENSATION-DS split.
+- Do not rename or reorganize the original synthetic-data folders.
+- Synthetic-data analysis and selection must use only information related to the real `training` split.
+- The real `validation` and `testing` splits must not be used for synthetic-data selection.
+- The real test set is used only for final evaluation.
+- Only synthetic samples marked as eligible for segmentation training may be used in the downstream training experiment.
+- All groups must use the common baseline configuration for downstream comparison.
+
+---
+
+## Dataset Check
+
+You can verify the SENSATION-DS structure with:
+
+```bash
+SENSATION_RUN_DATA_TESTS=1 pytest -m data
+```
+
+You can verify the general repository setup with:
+
+```bash
+pytest
+```
+
+The datasets themselves are not stored in the Git repository because of their size.
