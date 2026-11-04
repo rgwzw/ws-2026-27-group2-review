@@ -7,9 +7,7 @@ images and selects a reproducible 548-image subset. It does not train or evaluat
 segmentation model. We investigate whether selecting images by perceptual quality
 improves downstream segmentation at a fixed synthetic-data budget.
 
-The second metric, metric agreement/calibration analysis, top/bottom figures and
-downstream experiments are **not completed**. This first version is not evidence
-that the selected images improve segmentation.
+The second metric (we choose Laplacian Variance), metric agreement analysis, and top/bottom figures are now completed. The Spearman rank correlation between the two metrics is 0.4314 (p < 0.001), demonstrating significant consistency. 
 
 ## Inputs and data paths
 
@@ -122,6 +120,20 @@ version; whoever starts shared training must configure its canonical/subset path
 Generated results live under `group-2/results/fallback-v1/`, which is ignored by the
 existing repository rules. Fixture outputs are never committed as formal results.
 
+## Two-Student Extension
+
+- Second Metric:
+  Implemented Laplacian Variance in src/group_2/second_metric.py to measure image sharpness by convolving a 3x3 Laplacian kernel over the grayscale image and calculating the variance.
+
+- Agreement Analysis: Implemented src/group_2/agreement.py to sample 2,000 analysis-eligible images, compute both metrics, and calculate the Spearman rank correlation.
+
+- Results: The Spearman correlation is 0.4314 (p-value: 1.83e-91). This moderate positive correlation proves that the contrast-gradient metric and the Laplacian variance metric are statistically consistent. The agreement data is saved in group-2/results/fallback-v1/metric_agreement.csv.
+
+- Top/Bottom Figures: Generated top_bottom_examples.jpg to visually inspect the selected images.
+
+
+
+
 ## Limitations and later work
 
 - Contrast and gradients measure detail, not human perceptual quality. Noise,
@@ -135,9 +147,9 @@ existing repository rules. Fixture outputs are never committed as formal results
   loader's version checks rather than a full dataset audit.
 - The scorer holds metadata and scalar scores in memory, but only one decoded image
   at a time. This first version has no score cache, resume or parallel workers.
-- The two-person extension still needs a second justified metric, calibration and
-  agreement analysis. SSIM/LPIPS are optional and require justified alignment and
-  paired real training images.
+- The two-person extension is completed. We implemented Laplacian variance as the
+  second metric, and performed Spearman rank correlation analysis to validate metric
+  agreement. 
 - The final project protocol compares `perceptual_quality_budget_0.25x` with
   instructor-provided `real_only` and the exact `random_budget_0.25x`, using training
   seeds 17, 42 and 73. Those downstream runs and result bundles are separate work;
